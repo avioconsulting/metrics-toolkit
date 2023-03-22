@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_2b032bc6_248b_40b4_9549_0999b9da2229_Output_Variables_event = Null
+
