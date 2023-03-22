@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<flow name="application-data-poller-flow" doc:id="3da9e6de-da8b-4c4a-867d-40f1a7935577" >
 		<scheduler doc:name="Scheduler" doc:id="c362f9e8-f37d-414b-80ec-aca900bc4017" >
 			<scheduling-strategy >
-				<fixed-frequency frequency="3000000"/>
+				<cron expression="${applicationPoller.frequency.cron}" timeZone="${applicationPoller.frequency.timezone}" />
 			</scheduling-strategy>
 		</scheduler>
 		<flow-ref doc:name="set auth vars" doc:id="c913458e-e2e0-453d-9204-4ecd2c0dd786" name="common-set-auth-vars-from-properties"/>
@@ -237,7 +237,7 @@ vars.apps + vars.appData]]></ee:set-variable>
 		</ee:transform>
 	</sub-flow>
 	<sub-flow name="application-poller-elk-loader-subflow" doc:id="4c695be8-e74b-421d-8e6a-b5af5a8c86ac" >
-		<set-variable value="#[p('elk.index.applicationsFlow')]" doc:name="set index" doc:id="cf4d09f2-d871-4144-aa12-9715f44bd216" variableName="index" />
+		<set-variable value="#[p('elk.index.applicationsMetrics')]" doc:name="set index" doc:id="cf4d09f2-d871-4144-aa12-9715f44bd216" variableName="index" />
 		<flow-ref doc:name="ELK Flow Reference" doc:id="e380161e-fa71-40b5-a56a-c4a73976fa19" name="elk-applications-loader-flow"/>
 	</sub-flow>
 </mule>

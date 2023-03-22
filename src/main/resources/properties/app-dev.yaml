@@ -17,15 +17,24 @@ embedded.dashboard:
   enabled: "false"
 
 poller:
-  enabled: "false"
+  enabled: "true"
   frequency: 
     cron: "0 0 0 * * ? *" 
     #Sample for dev "0 17 * * * ? *" At second :00 of minute :17 of every hour
     #Sample for prod "0 0 0 * * ? *" At 00:00:00am every day
     #https://www.freeformatter.com/cron-expression-generator-quartz.html
     timezone: "GMT-3"
+
+applicationsPoller:
+  frequency: 
+    cron: "0 0 0 * * ? *" 
+    #Sample for dev "0 17 * * * ? *" At second :00 of minute :17 of every hour
+    #Sample for prod "0 0 0 * * ? *" At 00:00:00am every day
+    #https://www.freeformatter.com/cron-expression-generator-quartz.html
+    timezone: "GMT-3"
+
 auth:
-  mode: "platform-credentials" # valid options are: platform-credentials or connected-app-credentials
+  mode: "connected-app-credentials" # valid options are: platform-credentials or connected-app-credentials
   
 aggregation:
   raw: "false"
@@ -79,12 +88,13 @@ mongodb:
   collection: "metrics"
             
 elk:
-  host: "localhost"
-  port: "9200"
-  protocol: "HTTP"
+  host: "avio-elastic.es.us-west-2.aws.found.io"
+  port: "443"
+  protocol: "HTTPS"
   index:
     metrics: "metrics"
-    benefits: "platformbenefits"     
+    benefits: "platformbenefits"
+    applicationsMetrics: "application_metrics_fran"  
 
 tableau:
   outputDir: "./data"

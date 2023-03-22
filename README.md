@@ -585,3 +585,16 @@ Enjoy and provide feedback / contribute :)
 ### Permission errors
 - All `403` errors, specifically, for the endpoint related to RTF deployments /hybrid/api/v2/ are permissions issues, be sure the user/connected-app has the right permissions (Runtime Manager and Runtime Fabric specifically): [Requirements](#requirements)
 
+## Applications metrics add-on
+A new flow has been added in order to grab some statistics from applications within each environment
+### Notes
+- it only work using `connected-apps` credentials.
+- it only poll applications data into elk.
+- add poller properties into `app-dev.yaml` for specify application poller cron settings:
+    ```yaml
+    applicationsPoller:
+        frequency: 
+            cron: "0 0 0 * * ? *" 
+            timezone: "GMT-3"
+    ```
+- add property `applicationsMetrics: "index-name-to-set"` into `app-dev.yaml` file under `elk.index` property.
