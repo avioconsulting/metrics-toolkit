@@ -17,7 +17,7 @@ embedded.dashboard:
   enabled: "false"
 
 poller:
-  enabled: "true"
+  enabled: "false"
   frequency: 
     cron: "0 0 0 * * ? *" 
     #Sample for dev "0 17 * * * ? *" At second :00 of minute :17 of every hour
@@ -88,13 +88,13 @@ mongodb:
   collection: "metrics"
             
 elk:
-  host: "avio-elastic.es.us-west-2.aws.found.io"
-  port: "443"
-  protocol: "HTTPS"
+  host: "localhost"
+  port: "9200"
+  protocol: "HTTP"
   index:
     metrics: "metrics"
     benefits: "platformbenefits"
-    applicationsMetrics: "application_metrics_fran"  
+    applicationsMetrics: "application_metrics"  
 
 tableau:
   outputDir: "./data"

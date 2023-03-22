@@ -590,7 +590,7 @@ A new flow has been added in order to grab some statistics from applications wit
 ### Notes
 - it only work using `connected-apps` credentials.
 - it only poll applications data into elk.
-- add poller properties into `app-dev.yaml` for specify application poller cron settings:
+- add poller properties into `app-dev.yaml` for specify application poller cron settings (application poller will always enable):
     ```yaml
     applicationsPoller:
         frequency: 
