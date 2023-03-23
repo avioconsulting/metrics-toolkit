@@ -6,13 +6,13 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="application-data-poller-flow" doc:id="3da9e6de-da8b-4c4a-867d-40f1a7935577" >
-		<scheduler doc:name="Scheduler" doc:id="c362f9e8-f37d-414b-80ec-aca900bc4017" >
+		<scheduler doc:name="poller trigger" doc:id="c362f9e8-f37d-414b-80ec-aca900bc4017" >
 			<scheduling-strategy >
 				<cron expression="${applicationPoller.frequency.cron}" timeZone="${applicationPoller.frequency.timezone}" />
 			</scheduling-strategy>
 		</scheduler>
 		<flow-ref doc:name="set auth vars" doc:id="c913458e-e2e0-453d-9204-4ecd2c0dd786" name="common-set-auth-vars-from-properties"/>
-		<flow-ref doc:name="get token from auth api" doc:id="87319c35-ec0a-4c3f-8188-94cce1d24f3b" name="api-call-coreservices-login-connectedapp-flow" target="token" targetValue="#[payload.access_token]"/>
+		<flow-ref doc:name="get token from auth api" doc:id="87319c35-ec0a-4c3f-8188-94cce1d24f3b" name="api-call-coreservices-login-flow" target="token" targetValue="#[payload.access_token]"/>
 		<flow-ref doc:name="get organization from api" doc:id="b4e70a08-e3ce-4b1e-a16d-b36d011a6734" name="api-call-coreservices-organizations-flow" target="org"/>
 		<ee:transform doc:name="subOrgs, apps" doc:id="ab7b83b5-2f4f-4628-969d-9fa9cd3478ca" >
 			<ee:message >
@@ -48,7 +48,7 @@ output application/json
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="9db62518-a569-43ee-b2a3-347084384a44" message="#[&quot;::: Found errors&quot; ++ write(payload.errors, 'application/json')]]" />
+		<logger level="INFO" doc:name="logging errors" doc:id="9db62518-a569-43ee-b2a3-347084384a44" message="#[&quot;::: Found errors&quot; ++ write(payload.errors, 'application/json')]]" />
 		<flow-ref doc:name="elk application data loader" doc:id="e0fb39ec-1974-498b-80b7-612438f8d54d" name="application-poller-elk-loader-subflow"/>
 	</flow>
 	<sub-flow name="environment-data-flow" doc:id="9ff15ffb-098d-47f3-81b2-37d6a284ce56">
@@ -100,7 +100,7 @@ output application/java
 }]]]></http:headers>
 			</http:request>
 			<foreach doc:name="retireve app by app name" doc:id="445e3ecc-1487-49f2-a1b2-b132aa886b22" collection="payload">
-					<logger level="INFO" doc:name="Logger" doc:id="03a50176-7deb-4d0b-9ec9-06fb3b2fdb4e" message='#["::: Getting info from app:"  ++ payload.domain]'/>
+					<logger level="INFO" doc:name="logging app in process" doc:id="03a50176-7deb-4d0b-9ec9-06fb3b2fdb4e" message='#["::: Getting info from app:"  ++ payload.domain]'/>
 					<flow-ref doc:name="retrieve applications data" doc:id="2a30e660-034b-4962-8e43-259a579ef392" name="applications-data-subflow"/>
 			</foreach>
 		</foreach>
