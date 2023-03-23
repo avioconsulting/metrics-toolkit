@@ -49,6 +49,36 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			</ee:message>
 		</ee:transform>
 	</flow>
+	<flow name="elk-applications-loader-flow" doc:id="2b032bc6-248b-40b4-9549-0999b9da2229" >
+		<ee:transform doc:name="Build ELK Request" doc:id="05f14ce4-91fe-4723-9e6f-3aeb66037d1d" >
+			<ee:message >
+				<ee:set-payload resource="dw/poller/applications/loader-elk-build-structure.dwl" />
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="loaderDetails" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	elk: {
+		host: p('elk.host'),
+	  	port: p('elk.port')		
+	}
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<http:request method="POST" doc:name="Build ELK HTTP Request" doc:id="1957f9da-2787-4c53-a8be-7695f115317c" config-ref="HTTP_ELK_Request_configuration" path="#['/$(vars.index)/_bulk']" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Content-Type" : "application/json"
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="Build Loader Response" doc:id="3020012c-99c6-42cf-b60e-8d71120baa12" >
+			<ee:message >
+				<ee:set-payload resource="dw/poller/applications/loader-success-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
 	
 
 </mule>
